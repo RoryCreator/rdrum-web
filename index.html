@@ -47,7 +47,7 @@ p{color:var(--muted)}strong{color:var(--text);font-weight:600}
 .hero::before{content:"";position:absolute;inset:-10% -20% auto;height:900px;z-index:-1;background:radial-gradient(50% 45% at 50% 30%,rgba(0,216,235,.18),transparent 70%),radial-gradient(30% 30% at 70% 55%,rgba(44,238,136,.08),transparent 70%)}
 .hero::after{content:"";position:absolute;inset:0 0 auto;height:900px;z-index:-1;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(60% 50% at 50% 30%,#000 10%,transparent 75%);-webkit-mask-image:radial-gradient(60% 50% at 50% 30%,#000 10%,transparent 75%);opacity:.5}
 .pill{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;border:1px solid var(--line2);border-radius:999px;background:rgba(255,255,255,.03);font-size:13px;color:#cfd8da;transition:border-color .2s}
-.pill:hover{border-color:rgba(0,216,235,.5)}.pill em{font-style:normal;font:600 11px/1 var(--mono);letter-spacing:.08em;background:var(--cyan);color:#03191b;padding:5px 9px;border-radius:999px}
+.pill:hover{border-color:rgba(0,216,235,.5)}.pill em{font-style:normal;white-space:nowrap;font:600 11px/1 var(--mono);letter-spacing:.08em;background:var(--cyan);color:#03191b;padding:5px 9px;border-radius:999px}
 .hero h1{font-size:clamp(48px,8.2vw,112px);letter-spacing:-.055em;line-height:.95;margin:28px auto 26px;max-width:1000px}
 .hero .lead{font-size:clamp(17px,1.6vw,20px);line-height:1.55;max-width:680px;margin:0 auto;color:#aab5b8}
 .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:36px 0 16px}
@@ -225,6 +225,27 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:40px}
 .form{padding:24px}.form .row{grid-template-columns:1fr}.price-card{padding:32px 24px}.price{font-size:72px}
 .trial{padding:40px 22px;border-radius:24px}.trial .actions .btn{width:100%}.foot{grid-template-columns:1fr}.faq summary{font-size:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{transition:none!important}}
+
+/* Portada con video de fondo a pantalla completa */
+.hero-bg{position:relative;isolation:isolate;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding:120px 0 110px}
+.hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% center;z-index:-3}
+#hero-motion{z-index:-2}
+.hero-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(7,9,10,.94) 0%,rgba(7,9,10,.82) 34%,rgba(7,9,10,.35) 70%,rgba(7,9,10,.25) 100%),linear-gradient(180deg,rgba(7,9,10,.55) 0%,transparent 22%,transparent 72%,var(--bg) 100%)}
+.hero-copy{position:relative}
+.hero-copy h1{font-size:clamp(46px,7vw,100px);letter-spacing:-.055em;line-height:.95;margin:26px 0 24px;max-width:780px}
+.hero-copy .lead{font-size:clamp(17px,1.5vw,20px);line-height:1.55;max-width:540px;color:#c4ced1}
+.hero-copy .hero-actions{justify-content:flex-start;margin:34px 0 16px}
+.hero-copy .hero-note{color:#8d9a9d}
+.btn-glass{background:rgba(10,14,16,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-color:rgba(255,255,255,.25)}
+.hero-toggle{position:absolute;right:24px;bottom:28px}
+.scroll-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);width:26px;height:42px;border:1.5px solid rgba(255,255,255,.35);border-radius:14px}
+.scroll-cue span{position:absolute;left:50%;top:8px;width:3px;height:8px;margin-left:-1.5px;border-radius:2px;background:var(--cyan);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{opacity:0;transform:translateY(0)}40%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+.hero-after .stats{margin-top:0}
+.hero-after{padding-bottom:20px}
+@media(max-width:900px){.hero-shade{background:linear-gradient(180deg,rgba(7,9,10,.6) 0%,rgba(7,9,10,.78) 45%,rgba(7,9,10,.9) 80%,var(--bg) 100%)}.hero-media{object-position:center}}
+@media(max-width:600px){.hero-bg{padding:104px 0 96px;min-height:92svh}.hero-copy .hero-actions{flex-direction:column;align-items:stretch}.scroll-cue{display:none}.hero-toggle{right:16px;bottom:18px}}
+@media(prefers-reduced-motion:reduce){#hero-motion{display:none}.scroll-cue span{animation:none}}
 </style>
 </head>
 <body>
@@ -239,22 +260,24 @@ footer{border-top:1px solid var(--line);padding:64px 0 40px;margin-top:40px}
 
 <main id="contenido">
 <!-- HERO -->
-<section class="hero"><div class="wrap">
+<section class="hero-bg" aria-labelledby="hero-title">
+<img class="hero-media" src="rdrum-portada.jpg" alt="" width="1600" height="900" fetchpriority="high">
+<video class="hero-media" id="hero-motion" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" data-src="rdrum-portada-loop.mp4" poster="rdrum-portada.jpg"></video>
+<div class="hero-shade" aria-hidden="true"></div>
+<div class="wrap hero-copy">
 <a class="pill reveal" href="#novedades"><em>NUEVO 0.5.13</em>Centro, sidestick y rimshot en tu caja <span aria-hidden="true">→</span></a>
-<h1 class="reveal d1">Tu batería.<br><span class="grad">Cualquier sonido.</span></h1>
+<h1 id="hero-title" class="reveal d1">Tu batería.<br><span class="grad">Cualquier sonido.</span></h1>
 <p class="lead reveal d2">R-DRUM convierte cada golpe en el sonido que quieras, en tiempo real. Samples por capas, tu instrumento AU o VST3 y el micrófono real, mezclados pad por pad.</p>
 <div class="hero-actions reveal d3">
 <a class="btn btn-primary btn-lg" href="https://github.com/RoryCreator/groovetime-servidor/releases/download/rdrum-trial-v0.5.13/R-DRUM-Trial-0.5.13.dmg"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9m0 0L4.5 7.5M8 11l3.5-3.5M3 14h10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Descargar prueba gratis</a>
-<button class="btn btn-lg" id="watch-promo" type="button" aria-haspopup="dialog" aria-controls="promo-dialog"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7-4.5z" fill="currentColor"/></svg>Ver el video</button>
+<button class="btn btn-lg btn-glass" id="watch-promo" type="button" aria-haspopup="dialog" aria-controls="promo-dialog"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6v4h3l4 3V3L5 6z" fill="currentColor"/><path d="M11 5.5a3.5 3.5 0 010 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ver con sonido</button>
 </div>
 <p class="hero-note reveal d3">7 días gratis · Mac Intel y Apple Silicon · DMG de 8.1 MB · Sin clave para empezar</p>
-
-<div class="showcase reveal"><div class="showcase-in">
-<img src="rdrum-presentacion.jpg" alt="" width="1600" height="900">
-<video id="hero-motion" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" data-src="rdrum-portada-loop.mp4" poster="rdrum-presentacion.jpg"></video>
-<div class="showcase-ui"><button class="glass-btn" id="watch-promo-2" type="button"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6v4h3l4 3V3L5 6z" fill="currentColor"/><path d="M11 5.5a3.5 3.5 0 010 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Ver con sonido</button><button class="glass-btn icon" id="motion-toggle" type="button" aria-label="Pausar video de fondo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h2v10H5zM9 3h2v10H9z" fill="currentColor"/></svg></button></div>
-</div></div>
-
+</div>
+<button class="glass-btn icon hero-toggle" id="motion-toggle" type="button" aria-label="Pausar video de fondo"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h2v10H5zM9 3h2v10H9z" fill="currentColor"/></svg></button>
+<a class="scroll-cue" href="#novedades" aria-label="Bajar a las novedades"><span></span></a>
+</section>
+<section class="hero-after"><div class="wrap">
 <div class="stats reveal">
 <div class="stat"><b>8 pads</b><span>Detección independiente por pad</span></div>
 <div class="stat"><b>3 fuentes</b><span>Micrófono · sample · instrumento</span></div>
@@ -451,7 +474,7 @@ toggle.addEventListener('click',()=>{userPaused=!bg.paused;update();});bg.addEve
 new IntersectionObserver(es=>{inView=es[0].isIntersecting;update();},{threshold:.1}).observe(bg);
 fg.forEach(v=>{v.addEventListener('play',()=>{fg.forEach(o=>{if(o!==v)o.pause();});bg.pause();});v.addEventListener('pause',()=>{if(!dialog.open)update();});v.addEventListener('ended',update);});
 const openPromo=()=>{bg.pause();dialog.showModal();full.currentTime=0;full.muted=false;full.play().catch(()=>{});};
-document.getElementById('watch-promo').addEventListener('click',openPromo);document.getElementById('watch-promo-2').addEventListener('click',openPromo);
+document.getElementById('watch-promo').addEventListener('click',openPromo);
 close.addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>{full.pause();update();});
 update();
 })();
